@@ -139,7 +139,6 @@
             Name = "ClockForm";
             Text = "ClockForm";
             FormClosed += ClockForm_FormClosed;
-            Load += ClockForm_Load;
             ResumeLayout(false);
             PerformLayout();
         }

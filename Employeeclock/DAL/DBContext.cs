@@ -13,32 +13,29 @@ namespace Employeeclock.DAL
     public class DBContext
     {
 
-        private readonly string _connectionString;
-        public DBContext()
-        {
-            _connectionString = getconstr();
-        }
+
 
         private string getconstr()
         {
-            IConfiguration builder = new ConfigurationBuilder()
-                .AddJsonFile("secrets.json", optional: true) 
-                .Build();
-            
-            string connString = builder["ConnectionString"];
-            if (string.IsNullOrEmpty(connString)) {
-                throw new Exception("cannot read conn string from secrets");
-            };
-            return connString;
+            var config = new ConfigurationBuilder()
+             .AddUserSecrets<DBContext>()
+             .Build();
+            string? cs = config["connectionString"];
+            if (cs == null) throw new Exception("Cannot read conn striong from secrets");
+            return cs;
         }
 
-        public DataTable MadeQuery(string querystr)
+        public DataTable MadeQuery(string querystr, SqlParameter parameters = null)
         {
             DataTable output = new DataTable();
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = new SqlConnection(getconstr()))
             {
                 using (SqlCommand cmd = new SqlCommand(querystr, conn))
                 {
+                    if (parameters != null)
+                    {
+                        cmd.Parameters.Add(parameters);
+                    }
                     try
                     {
                         conn.Open();
@@ -55,6 +52,12 @@ namespace Employeeclock.DAL
             }
             return output;
         }
-
- }
+        public DataTable AproovePassword(string tz)
+        {
+            SqlParameter sqlParameter = new SqlParameter("@tz", tz);           
+            string query = "select p.EmployeePassword from Employees e join Passwords p ON p.EmployeeID = e.ID where p.EmployeeID = @tz";
+            DataTable dt = MadeQuery(query, sqlParameter);
+            return dt;
+        }
+    }
 }

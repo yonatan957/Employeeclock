@@ -91,23 +91,9 @@ namespace Employeeclock.NewFolder
             Application.Exit();
         }
 
-        private void ClockForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void ClockForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Application.Exit();
-        }
-
-        protected override void OnFormClosed(FormClosedEventArgs e)
-        {
-            base.OnFormClosed(e);
-            if (!NavigationService.isNavigate)
-            {
-                Application.Exit();
-            }
         }
     }
 }

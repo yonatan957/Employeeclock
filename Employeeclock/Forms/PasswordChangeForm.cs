@@ -27,11 +27,7 @@ namespace Employeeclock
 
         private void button_ppTOlp_apruve_Click(object sender, EventArgs e)
         {
-            if (textBox_OPassword.Text.Length == 0 || textBoxNPassword.Text.Length == 0 || textBoxNPassword.Text.Length == 0 || textBox_NPasswordApprove.Text.Length == 0)
-            {
-                MessageBox.Show("one or more properties is empty");
-                return;
-            }
+            
             string np = textBoxNPassword.Text;
             string npa = textBox_NPasswordApprove.Text;
             string tz = textBox_TZ.Text;
